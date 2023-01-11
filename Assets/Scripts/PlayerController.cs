@@ -6,9 +6,10 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float jumpForce = 10;
-    public float gravityModifier = 3;
+    public float gravityModifier = 1;
 
     private Rigidbody playerRB;
+    private bool isOnGround = true;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,15 @@ public class PlayerController : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.started && isOnGround)
+        {
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // transform.translate
+            isOnGround = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        isOnGround = true;
     }
 }
