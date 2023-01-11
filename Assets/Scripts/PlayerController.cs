@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,12 +11,17 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
-        playerRB.AddForce(Vector3.up * 500); // transform.translate
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Jump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+            playerRB.AddForce(Vector3.up * 500); // transform.translate
     }
 }
