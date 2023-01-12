@@ -5,15 +5,28 @@ using UnityEngine;
 public class ScrollLelft : MonoBehaviour
 {
     public float speedMoveLeft = 30;
+
+    private PlayerController playerControllerScript;
+    private float leftBound = -15;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.left * Time.deltaTime * speedMoveLeft);
+        if (playerControllerScript.gameOver == false)
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * speedMoveLeft);
+        }
+
+        // if obstacle is not in the scene view, destroy it (background uses the same script for scrolling)
+        if (transform.position.x < leftBound && gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

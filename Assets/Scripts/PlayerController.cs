@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public float jumpForce = 10;
-    public float gravityModifier = 1;
+    public float gravityModifier = 3;
+    public bool gameOver;
 
     private Rigidbody playerRB;
     private bool isOnGround = true;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         playerRB = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
+        gameOver = false;
     }
 
     // Update is called once per frame
@@ -35,6 +37,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        isOnGround = true;
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isOnGround = true;
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            gameOver = true;
+            Debug.Log("Game Over!...");
+        }
     }
 }
