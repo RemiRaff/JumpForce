@@ -8,11 +8,16 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 700; // force added for the jump
     public float gravityModifier = 1.5f; // for landing quickly after a jump
     public bool gameOver; // flag for game over used in other scripts
+
     public ParticleSystem explosionParticle;
     public ParticleSystem splatterParticle;
 
+    public AudioClip jumpSound;
+    public AudioClip crashSound;
+
     private Rigidbody playerRB;
     private Animator playerAnim;
+    private AudioSource playerAudio;
     private bool isOnGround = true;
 
     // Start is called before the first frame update
@@ -21,6 +26,7 @@ public class PlayerController : MonoBehaviour
         playerRB = GetComponent<Rigidbody>();
         // GetComponentInChildren because Animator in child (character gameobject)
         playerAnim = GetComponentInChildren<Animator>();
+        playerAudio = GetComponent<AudioSource>();
 
         Physics.gravity *= gravityModifier;
         gameOver = false;
@@ -39,6 +45,8 @@ public class PlayerController : MonoBehaviour
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // transform.translate
             isOnGround = false;
             playerAnim.SetTrigger("Jump_trig");
+            splatterParticle.Stop();
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
         }
     }
 
@@ -47,6 +55,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
+            splatterParticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
@@ -56,6 +65,7 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetInteger("DeathType_int", 1);
             explosionParticle.Play();
             splatterParticle.Stop();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
         }
     }
 }
