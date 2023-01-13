@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 700; // force added for the jump
     public float gravityModifier = 1.5f; // for landing quickly after a jump
     public bool gameOver; // flag for game over used in other scripts
+    public ParticleSystem explosionParticle;
+    public ParticleSystem splatterParticle;
 
     private Rigidbody playerRB;
     private Animator playerAnim;
@@ -52,6 +54,8 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Game Over!...");
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);
+            explosionParticle.Play();
+            splatterParticle.Stop();
         }
     }
 }
