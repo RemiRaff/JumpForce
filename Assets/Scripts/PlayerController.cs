@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce = 10;
-    public float gravityModifier = 3;
-    public bool gameOver;
+    public float jumpForce = 700; // force added for the jump
+    public float gravityModifier = 1.5f; // for landing quickly after a jump
+    public bool gameOver; // flag for game over used in other scripts
 
     private Rigidbody playerRB;
     private Animator playerAnim;
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
-        // GetComponentInChildren because Animator in child
+        // GetComponentInChildren because Animator in child (character gameobject)
         playerAnim = GetComponentInChildren<Animator>();
 
         Physics.gravity *= gravityModifier;
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Jump(InputAction.CallbackContext ctx)
