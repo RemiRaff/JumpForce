@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ctx.started && isOnGround && !gameOver)
         {
+            // Running_Jump include a deplacement, need to uncheck the 'Apply Root Motion' for staying at the same place
             playerRB.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // transform.translate
             isOnGround = false;
             playerAnim.SetTrigger("Jump_trig");
@@ -55,17 +56,19 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-            splatterParticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
+            splatterParticle.Stop();
             gameOver = true;
             Debug.Log("Game Over!...");
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);
+
             explosionParticle.Play();
-            splatterParticle.Stop();
             playerAudio.PlayOneShot(crashSound, 1.0f);
         }
+        if (isOnGround && !gameOver)
+            splatterParticle.Play();
     }
 }
